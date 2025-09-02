@@ -192,7 +192,7 @@ class EmbeddingConfig(ConfigWizard):
     )
     model_engine: str = configfield(
         "model_engine",
-        default="nvidia-ai-endpoints",
+        default="huggingface",
         help_txt="The server type of the hosted model. Allowed values are hugginface",
     )
     dimensions: int = configfield(
@@ -215,12 +215,12 @@ class RankingConfig(ConfigWizard):
 
     model_name: str = configfield(
         "model_name",
-        default="nv-rerank-qa-mistral-4b:1",
+        default="BAAI/bge-reranker-base",
         help_txt="The name of Ranking model.",
     )
     model_engine: str = configfield(
         "model_engine",
-        default="nvidia-ai-endpoints",
+        default="cross_encoder",
         help_txt="The server type of the hosted model. Allowed values are nvidia-ai-endpoints",
     )
     server_url: str = configfield(

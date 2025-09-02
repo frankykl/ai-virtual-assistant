@@ -40,7 +40,9 @@ except Exception as e:
     logger.warning(f"Optional Langchain module langchain_core not installed.")
 
 try:
-    from langchain_ollama import ChatOllama, 
+    from langchain_ollama import ChatOllama
+except Exception as e:
+    logger.warning(f"Optional Langchain Ollama not installed.")
 
 try:
     from langchain_nvidia_ai_endpoints import ChatNVIDIA, NVIDIAEmbeddings, NVIDIARerank
@@ -241,7 +243,10 @@ def get_ranking_model() -> BaseDocumentCompressor:
     settings = get_config()
 
     try:
-        if settings.ranking.model_engine == "nvidia-ai-endpoints":
+        if settings.ranking.model_engine == "cross_encoder":
+            from langchain.retrievers.document_compressors import CrossEncoderReranker
+            return CrossEncoderReranker(model=settings.ranking.model_name, top_n=settings.retriever.top_k)
+        elif settings.ranking.model_engine == "nvidia-ai-endpoints":
             if settings.ranking.server_url:
                 logger.info(f"Using ranking model hosted at {settings.ranking.server_url}")
                 return NVIDIARerank(
