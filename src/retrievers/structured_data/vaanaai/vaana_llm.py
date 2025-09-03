@@ -16,7 +16,7 @@ from vanna.base import VannaBase
 from src.common.utils import get_llm
 
 
-class NvidiaLLM(VannaBase):
+class VannaLLM(VannaBase):
     def __init__(self, config=None):
         default_llm_kwargs = {"temperature": 0.2, "top_p": 0.7, "max_tokens": 1024}
         self.model = get_llm(**default_llm_kwargs)

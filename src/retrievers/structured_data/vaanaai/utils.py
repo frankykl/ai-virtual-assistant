@@ -16,15 +16,15 @@ import numpy as np
 from typing import List
 
 
-class NVIDIAEmbeddingsWrapper:
-    def __init__(self, nvidia_embeddings):
-        self.nvidia_embeddings = nvidia_embeddings
+class VannaEmbeddingsWrapper:
+    def __init__(self, vanna_embeddings):
+        self.vanna_embeddings = vanna_embeddings
 
     def encode_queries(self, queries: List[str]) -> List[np.array]:
         # Convert each embedding from embed_query to np.array
-        # return [np.array(embedding) for embedding in self.nvidia_embeddings.embed_query(queries)]
-        return list(map(np.array, [self.nvidia_embeddings.embed_query(query) for query in queries]))
+        # return [np.array(embedding) for embedding in self.vanna_embeddings.embed_query(queries)]
+        return list(map(np.array, [self.vanna_embeddings.embed_query(query) for query in queries]))
 
     def encode_documents(self, documents: List[str]) -> List[np.array]:
         # Convert each embedding from embed_documents to np.array
-        return list(map(np.array, self.nvidia_embeddings.embed_documents(documents)))
+        return list(map(np.array, self.vanna_embeddings.embed_documents(documents)))
