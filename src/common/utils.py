@@ -243,7 +243,7 @@ def get_ranking_model() -> BaseDocumentCompressor:
     settings = get_config()
 
     try:
-        if settings.ranking.model_engine == "cross_encoder":
+        if settings.ranking.model_engine == "langchain_cross_encoder":
             from langchain.retrievers.document_compressors import CrossEncoderReranker
             return CrossEncoderReranker(model=settings.ranking.model_name, top_n=settings.retriever.top_k)
         elif settings.ranking.model_engine == "nvidia-ai-endpoints":

@@ -1,6 +1,6 @@
-include:
-  - path:
-    - nims.yaml
+#include:
+#  - path:
+#    - nims.yaml
 
 services:
   # =======================
@@ -8,7 +8,7 @@ services:
   # =======================
   agent-chain-server:
     container_name: agent-chain-server
-    image: nvcr.io/nvidia/blueprint/aiva-customer-service-agent:1.1.0
+    image: aiva-customer-service-agent:1.1.0
     build:
       # Set context to repo's root directory
       context: ../../
@@ -16,8 +16,8 @@ services:
     command: --port 8081 --host 0.0.0.0 --workers 1 --loop asyncio
     environment:
       EXAMPLE_PATH: './src/agent'
-      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"meta/llama-3.3-70b-instruct"}
-      APP_LLM_MODELENGINE: nvidia-ai-endpoints
+      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"gpt-oss:20b"}
+      APP_LLM_MODELENGINE: ollama-ai-endpoints
       APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-""}
       # Cache name to store user conversation
       # supported type inmemory, redis
@@ -69,7 +69,7 @@ services:
     build:
       context: ../../
       dockerfile: ./src/api_gateway/Dockerfile
-    image: nvcr.io/nvidia/blueprint/aiva-customer-service-api-gateway:1.1.0
+    image: aiva-customer-service-api-gateway:1.1.0
     command: --port 9000 --host 0.0.0.0 --workers 1
     ports:
       - "9000:9000"
@@ -82,7 +82,7 @@ services:
     - agent-chain-server
 
   agent-frontend:
-    image: nvcr.io/nvidia/blueprint/aiva-customer-service-ui:1.1.0
+    image: aiva-customer-service-ui:1.1.0
     container_name: agent-frontend
     environment:
       - INFERENCE_ORIGIN=http://api-gateway-server:9000
@@ -97,7 +97,7 @@ services:
   # =======================
   analytics-server:
     container_name: analytics-server
-    image: nvcr.io/nvidia/blueprint/aiva-customer-service-analytics:1.1.0
+    image: aiva-customer-service-analytics:1.1.0
     build:
       # Set context to repo's root directory
       context: ../../
@@ -105,8 +105,8 @@ services:
     command: --port 8081 --host 0.0.0.0 --workers 1
     environment:
       EXAMPLE_PATH: './src/analytics'
-      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"meta/llama-3.3-70b-instruct"}
-      APP_LLM_MODELENGINE: nvidia-ai-endpoints
+      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"gpt-oss:20b"}
+      APP_LLM_MODELENGINE: ollama-ai-endpoints
       APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-""}
       # Database name to store user conversation/summary
       # supported type inmemory, redis
@@ -139,7 +139,7 @@ services:
   # Fetch relevant document from vectorstore
   unstructured-retriever:
     container_name: unstructured-retriever
-    image: nvcr.io/nvidia/blueprint/aiva-customer-service-unstructured-retriever:1.1.0
+    image: aiva-customer-service-unstructured-retriever:1.1.0
     build:
       # Set context to repo's root directory
       context: ../../
@@ -157,19 +157,19 @@ services:
       # Type of vectordb used to store embedding supported type milvus, pgvector
       APP_VECTORSTORE_NAME: "milvus"
       # url on which llm model is hosted. If "", Nvidia hosted API is used
-      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"meta/llama-3.3-70b-instruct"}
+      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"gpt-oss:20b"}
       # embedding model engine used for inference, supported type nvidia-ai-endpoints, huggingface
-      APP_LLM_MODELENGINE: nvidia-ai-endpoints
+      APP_LLM_MODELENGINE: ollama-ai-endpoints
       # url on which llm model is hosted. If "", Nvidia hosted API is used
       APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-""}
-      APP_EMBEDDINGS_MODELNAME: ${APP_EMBEDDINGS_MODELNAME:-nvidia/llama-3.2-nv-embedqa-1b-v2}
+      APP_EMBEDDINGS_MODELNAME: ${APP_EMBEDDINGS_MODELNAME:-"text-embedding-ada-002"}
       # embedding model engine used for inference, supported type nvidia-ai-endpoints
-      APP_EMBEDDINGS_MODELENGINE: ${APP_EMBEDDINGS_MODELENGINE:-nvidia-ai-endpoints}
+      APP_EMBEDDINGS_MODELENGINE: ${APP_EMBEDDINGS_MODELENGINE:-huggingface}
       # url on which embedding model is hosted. If "", Nvidia hosted API is used
       APP_EMBEDDINGS_SERVERURL: ${APP_EMBEDDINGS_SERVERURL:-""}
-      APP_RANKING_MODELNAME: ${APP_RANKING_MODELNAME:-"nvidia/llama-3.2-nv-rerankqa-1b-v2"} # Leave it blank to avoid using ranking
+      APP_RANKING_MODELNAME: ${APP_RANKING_MODELNAME:-"BAAI/bge-reranker-base"} # Leave it blank to avoid using ranking
       # ranking engine used for inference, supported type nvidia-ai-endpoints
-      APP_RANKING_MODELENGINE: ${APP_RANKING_MODELENGINE:-nvidia-ai-endpoints}
+      APP_RANKING_MODELENGINE: ${APP_RANKING_MODELENGINE:-langchain_cross_encoder}
       # url on which re-ranking model is hosted. If "", Nvidia hosted API is used
       APP_RANKING_SERVERURL: ${APP_RANKING_SERVERURL:-""}
       # text splitter model name, it's fetched from huggingface
@@ -198,7 +198,7 @@ services:
   # Fetch user information form database
   structured-retriever:
     container_name: structured-retriever
-    image: nvcr.io/nvidia/blueprint/aiva-customer-service-structured-retriever:1.1.0
+    image: aiva-customer-service-structured-retriever:1.1.0
     build:
       context: ../../
       dockerfile: src/retrievers/Dockerfile
@@ -207,11 +207,11 @@ services:
     command: --port 8081 --host 0.0.0.0 --workers 1
     environment:
       EXAMPLE_PATH: 'src/retrievers/structured_data'
-      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-meta/llama-3.3-70b-instruct}
-      APP_LLM_MODELENGINE: nvidia-ai-endpoints
+      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"gpt-oss:20b"}
+      APP_LLM_MODELENGINE: ollama-ai-endpoints
       APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-""}
-      APP_EMBEDDINGS_MODELNAME: ${APP_EMBEDDINGS_MODELNAME:-nvidia/llama-3.2-nv-embedqa-1b-v2}
-      APP_EMBEDDINGS_MODELENGINE: ${APP_EMBEDDINGS_MODELENGINE:-nvidia-ai-endpoints}
+      APP_EMBEDDINGS_MODELNAME: ${APP_EMBEDDINGS_MODELNAME:-text-embedding-ada-002}
+      APP_EMBEDDINGS_MODELENGINE: ${APP_EMBEDDINGS_MODELENGINE:-huggingface}
       APP_EMBEDDINGS_SERVERURL: ${APP_EMBEDDINGS_SERVERURL:-""}
       APP_PROMPTS_CHATTEMPLATE: "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe. Please ensure that your responses are positive in nature."
       APP_PROMPTS_RAGTEMPLATE: "You are a helpful AI assistant named Envie. You will reply to questions only based on the context that you are provided. If something is out of context, you will refrain from replying and politely decline to respond to the user."
@@ -347,7 +347,7 @@ services:
 
   milvus:
     container_name: milvus-standalone
-    image: milvusdb/milvus:v2.4.15-gpu
+    image: milvusdb/milvus:v2.6.1-20250830-4376876f-arm64
     command: ["milvus", "run", "standalone"]
     environment:
       ETCD_ENDPOINTS: etcd:2379
@@ -369,15 +369,8 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              capabilities: ["gpu"]
-              device_ids: ['${VECTORSTORE_GPU_DEVICE_ID:-0}']
 
 
 networks:
   default:
-    name: nvidia-rag
+    name: generic-rag

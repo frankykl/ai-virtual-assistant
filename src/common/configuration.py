@@ -187,7 +187,7 @@ class EmbeddingConfig(ConfigWizard):
 
     model_name: str = configfield(
         "model_name",
-        default="snowflake/arctic-embed-l",
+        default="text-embedding-ada-002",
         help_txt="The name of huggingface embedding model.",
     )
     model_engine: str = configfield(
@@ -220,8 +220,8 @@ class RankingConfig(ConfigWizard):
     )
     model_engine: str = configfield(
         "model_engine",
-        default="cross_encoder",
-        help_txt="The server type of the hosted model. Allowed values are nvidia-ai-endpoints",
+        default="langchain_cross_encoder",
+        help_txt="The server type of the hosted model. Allowed values are nvidia-ai-endpoints, langchain_cross_encoder (with langchain)",
     )
     server_url: str = configfield(
         "server_url",
