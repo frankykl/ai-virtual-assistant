@@ -39,7 +39,7 @@ services:
       STRUCTURED_RAG_URI: http://structured-retriever:8081
       NVIDIA_API_KEY: ${NVIDIA_API_KEY}
       GRAPH_RECURSION_LIMIT: 20
-      GRAPH_TIMEOUT_IN_SEC: 20 # with meta/llama-3.3-70b-instruct
+      GRAPH_TIMEOUT_IN_SEC: 60 # with meta/llama-3.3-70b-instruct
       RETURN_WINDOW_CURRENT_DATE: '2024-10-23' # Leave it empty to get the current date
       RETURN_WINDOW_THRESHOLD_DAYS: 30
       # Log level for server, supported level NOTSET, DEBUG, INFO, WARN, ERROR, CRITICAL
