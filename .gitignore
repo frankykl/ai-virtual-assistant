@@ -2,3 +2,4 @@ deploy/compose/volumes/
 notebooks/.ipynb_checkpoints
 *venv/
 data/manuals_pdf
+data/product
