@@ -13,6 +13,9 @@ RUN apt update && \
     apt update && apt install -y python3.10 && \
     apt-get clean
 
+RUN curl -fsSL https://ollama.com/install.sh | sh 
+RUN ollama serve & sleep 5 && ollama run qwen3:8b
+
 # Install pip for python3.10
 RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
 

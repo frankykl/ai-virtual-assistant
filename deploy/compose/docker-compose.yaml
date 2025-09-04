@@ -9,14 +9,10 @@ services:
   agent-chain-server:
     container_name: agent-chain-server
     image: aiva-customer-service-agent:1.1.0
-    build:
-      # Set context to repo's root directory
-      context: ../../
-      dockerfile: src/agent/Dockerfile
     command: --port 8081 --host 0.0.0.0 --workers 1 --loop asyncio
     environment:
       EXAMPLE_PATH: './src/agent'
-      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"gpt-oss:20b"}
+      APP_LLM_MODELNAME: "qwen3:8b"
       APP_LLM_MODELENGINE: ollama-ai-endpoints
       APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-""}
       # Cache name to store user conversation
@@ -50,6 +46,10 @@ services:
       LOGLEVEL: ${LOGLEVEL:-INFO}
       # Set the default expiration time (TTL) for Redis keys (in seconds)
       REDIS_SESSION_EXPIRY: 12 # in hours
+    build:
+      # Set context to repo's root directory
+      context: ../../
+      dockerfile: src/agent/Dockerfile
     ports:
     - "8081:8081"
     expose:
@@ -82,7 +82,7 @@ services:
     - agent-chain-server
 
   agent-frontend:
-    image: aiva-customer-service-ui:1.1.0
+    image: nvcr.io/nvidia/blueprint/aiva-customer-service-ui:1.1.0
     container_name: agent-frontend
     environment:
       - INFERENCE_ORIGIN=http://api-gateway-server:9000
@@ -105,7 +105,7 @@ services:
     command: --port 8081 --host 0.0.0.0 --workers 1
     environment:
       EXAMPLE_PATH: './src/analytics'
-      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"gpt-oss:20b"}
+      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"qwen3:8b"}
       APP_LLM_MODELENGINE: ollama-ai-endpoints
       APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-""}
       # Database name to store user conversation/summary
@@ -157,7 +157,7 @@ services:
       # Type of vectordb used to store embedding supported type milvus, pgvector
       APP_VECTORSTORE_NAME: "milvus"
       # url on which llm model is hosted. If "", Nvidia hosted API is used
-      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"gpt-oss:20b"}
+      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"qwen3:8b"}
       # embedding model engine used for inference, supported type nvidia-ai-endpoints, huggingface
       APP_LLM_MODELENGINE: ollama-ai-endpoints
       # url on which llm model is hosted. If "", Nvidia hosted API is used
@@ -207,7 +207,7 @@ services:
     command: --port 8081 --host 0.0.0.0 --workers 1
     environment:
       EXAMPLE_PATH: 'src/retrievers/structured_data'
-      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"gpt-oss:20b"}
+      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"qwen3:8b"}
       APP_LLM_MODELENGINE: ollama-ai-endpoints
       APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-""}
       APP_EMBEDDINGS_MODELNAME: ${APP_EMBEDDINGS_MODELNAME:-text-embedding-ada-002}
@@ -238,9 +238,6 @@ services:
             required: false
       milvus:
         condition: service_healthy
-      nemollm-embedding:
-        condition: service_healthy
-        required: false
 
   # =======================
   # Database Services - User purchase history and permanently store conversation details
@@ -290,7 +287,7 @@ services:
   # Cache Services - To store conversation of user to share among multiple workers
   # =======================
   redis:
-    image: redis:7.0.13
+    image: arm64v8/redis:7.2
     restart: always
     ports:
       - "6379:6379"
@@ -299,7 +296,7 @@ services:
 
   redis-commander:
     # Visualization tool for redis
-    image: rediscommander/redis-commander:latest
+    image: visol/redis-commander:0.8.0
     restart: always
     ports:
       - "9092:8081"
