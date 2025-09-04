@@ -162,7 +162,7 @@ services:
       APP_LLM_MODELENGINE: ollama-ai-endpoints
       # url on which llm model is hosted. If "", Nvidia hosted API is used
       APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-""}
-      APP_EMBEDDINGS_MODELNAME: ${APP_EMBEDDINGS_MODELNAME:-"text-embedding-ada-002"}
+      APP_EMBEDDINGS_MODELNAME: ${APP_EMBEDDINGS_MODELNAME:-"sentence-transformers/all-mpnet-base-v2"}
       # embedding model engine used for inference, supported type nvidia-ai-endpoints
       APP_EMBEDDINGS_MODELENGINE: ${APP_EMBEDDINGS_MODELENGINE:-huggingface}
       # url on which embedding model is hosted. If "", Nvidia hosted API is used
@@ -210,7 +210,7 @@ services:
       APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"qwen3:8b"}
       APP_LLM_MODELENGINE: ollama-ai-endpoints
       APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-""}
-      APP_EMBEDDINGS_MODELNAME: ${APP_EMBEDDINGS_MODELNAME:-text-embedding-ada-002}
+      APP_EMBEDDINGS_MODELNAME: ${APP_EMBEDDINGS_MODELNAME:-sentence-transformers/all-mpnet-base-v2}
       APP_EMBEDDINGS_MODELENGINE: ${APP_EMBEDDINGS_MODELENGINE:-huggingface}
       APP_EMBEDDINGS_SERVERURL: ${APP_EMBEDDINGS_SERVERURL:-""}
       APP_PROMPTS_CHATTEMPLATE: "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe. Please ensure that your responses are positive in nature."

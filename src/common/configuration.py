@@ -187,7 +187,7 @@ class EmbeddingConfig(ConfigWizard):
 
     model_name: str = configfield(
         "model_name",
-        default="text-embedding-ada-002",
+        default="sentence-transformers/all-mpnet-base-v2",
         help_txt="The name of huggingface embedding model.",
     )
     model_engine: str = configfield(
