@@ -11,7 +11,13 @@ RUN apt update && \
     apt install -y curl software-properties-common libgl1 libglib2.0-0 && \
     add-apt-repository ppa:deadsnakes/ppa && \
     apt update && apt install -y python3.10 && \
+    apt install -y systemctl && \
     apt-get clean
+
+# Install and run ollama server
+RUN curl -fsSL https://ollama.com/install.sh | sh && \
+    systemctl start ollama && \
+    ollama run qwen3:8b
 
 # Install pip for python3.10
 RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
@@ -64,6 +70,9 @@ ENV HF_HOME=/tmp-data
 COPY src/common /opt/src/common
 COPY src/retrievers/server.py /opt/src/retrievers/
 COPY src/retrievers/base.py /opt/src/retrievers/
+COPY src/retrievers/startup_commands.sh /opt/src/retrievers/
 
 WORKDIR /opt
-ENTRYPOINT ["uvicorn", "src.retrievers.server:app"]
+
+RUN ["chmod", "+x", "/opt/src/retrievers/startup_commands.sh"]
+ENTRYPOINT ["/opt/src/retrievers/startup_commands.sh"]

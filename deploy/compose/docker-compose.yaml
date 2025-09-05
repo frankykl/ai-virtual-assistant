@@ -148,7 +148,7 @@ services:
         # Build args, used to copy relevant directory inside the container
         EXAMPLE_PATH: 'src/retrievers/unstructured_data'
     # start the server on port 8081
-    command: --port 8081 --host 0.0.0.0 --workers 1
+    command: 0.0.0.0 8081 1
     environment:
       # Path to example directory relative to GenerativeAIExamples/RAG/examples
       EXAMPLE_PATH: 'src/retrievers/unstructured_data'
@@ -204,7 +204,7 @@ services:
       dockerfile: src/retrievers/Dockerfile
       args:
         EXAMPLE_PATH: 'src/retrievers/structured_data'
-    command: --port 8081 --host 0.0.0.0 --workers 1
+    command: 0.0.0.0 8081 1
     environment:
       EXAMPLE_PATH: 'src/retrievers/structured_data'
       APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"qwen3:8b"}
