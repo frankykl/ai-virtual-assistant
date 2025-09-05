@@ -17,7 +17,7 @@ RUN apt update && \
 # Install and run ollama server
 RUN curl -fsSL https://ollama.com/install.sh | sh && \
     systemctl start ollama && \
-    ollama run qwen3:8b
+    ollama run qwen3:4b
 
 # Install pip for python3.10
 RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
