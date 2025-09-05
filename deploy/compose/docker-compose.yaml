@@ -9,7 +9,7 @@ services:
   agent-chain-server:
     container_name: agent-chain-server
     image: aiva-customer-service-agent:1.1.0
-    command: 0.0.0.0 8081
+    command: 0.0.0.0 8081 1
     environment:
       EXAMPLE_PATH: './src/agent'
       APP_LLM_MODELNAME: "qwen3:8b"
