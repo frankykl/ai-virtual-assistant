@@ -245,7 +245,9 @@ def get_ranking_model() -> BaseDocumentCompressor:
     try:
         if settings.ranking.model_engine == "langchain_cross_encoder":
             from langchain.retrievers.document_compressors import CrossEncoderReranker
-            return CrossEncoderReranker(model=settings.ranking.model_name, top_n=settings.retriever.top_k)
+            from langchain_community.cross_encoders import HuggingFaceCrossEncoder
+            model = HuggingFaceCrossEncoder(model_name=settings.ranking.model_name)
+            return CrossEncoderReranker(model=model, top_n=settings.retriever.top_k)
         elif settings.ranking.model_engine == "nvidia-ai-endpoints":
             if settings.ranking.server_url:
                 logger.info(f"Using ranking model hosted at {settings.ranking.server_url}")
