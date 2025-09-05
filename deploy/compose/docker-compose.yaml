@@ -9,12 +9,12 @@ services:
   agent-chain-server:
     container_name: agent-chain-server
     image: aiva-customer-service-agent:1.1.0
-    command: 0.0.0.0 8081 1
+    command: --port 8081 --host 0.0.0.0 --workers 1 --loop asyncio
     environment:
       EXAMPLE_PATH: './src/agent'
       APP_LLM_MODELNAME: "qwen3:4b"
       APP_LLM_MODELENGINE: ollama-ai-endpoints
-      APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-""}
+      APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-"host.docker.internal:11434"}
       # Cache name to store user conversation
       # supported type inmemory, redis
       APP_CACHE_NAME: ${APP_CACHE_NAME:-"redis"}
@@ -39,7 +39,7 @@ services:
       STRUCTURED_RAG_URI: http://structured-retriever:8081
       NVIDIA_API_KEY: ${NVIDIA_API_KEY}
       GRAPH_RECURSION_LIMIT: 20
-      GRAPH_TIMEOUT_IN_SEC: 60 # with meta/llama-3.3-70b-instruct
+      GRAPH_TIMEOUT_IN_SEC: 120 # with meta/llama-3.3-70b-instruct
       RETURN_WINDOW_CURRENT_DATE: '2024-10-23' # Leave it empty to get the current date
       RETURN_WINDOW_THRESHOLD_DAYS: 30
       # Log level for server, supported level NOTSET, DEBUG, INFO, WARN, ERROR, CRITICAL
@@ -107,7 +107,7 @@ services:
       EXAMPLE_PATH: './src/analytics'
       APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"qwen3:4b"}
       APP_LLM_MODELENGINE: ollama-ai-endpoints
-      APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-""}
+      APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-"host.docker.internal:11434"}
       # Database name to store user conversation/summary
       # supported type inmemory, redis
       APP_DATABASE_NAME: ${APP_DATABASE_NAME:-"postgres"}
@@ -148,7 +148,7 @@ services:
         # Build args, used to copy relevant directory inside the container
         EXAMPLE_PATH: 'src/retrievers/unstructured_data'
     # start the server on port 8081
-    command: 0.0.0.0 8081 1
+    command: --port 8081 --host 0.0.0.0 --workers 1
     environment:
       # Path to example directory relative to GenerativeAIExamples/RAG/examples
       EXAMPLE_PATH: 'src/retrievers/unstructured_data'
@@ -161,7 +161,7 @@ services:
       # embedding model engine used for inference, supported type nvidia-ai-endpoints, huggingface
       APP_LLM_MODELENGINE: ollama-ai-endpoints
       # url on which llm model is hosted. If "", Nvidia hosted API is used
-      APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-""}
+      APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-"host.docker.internal:11434"}
       APP_EMBEDDINGS_MODELNAME: ${APP_EMBEDDINGS_MODELNAME:-"sentence-transformers/all-mpnet-base-v2"}
       # embedding model engine used for inference, supported type nvidia-ai-endpoints
       APP_EMBEDDINGS_MODELENGINE: ${APP_EMBEDDINGS_MODELENGINE:-huggingface}
@@ -204,12 +204,12 @@ services:
       dockerfile: src/retrievers/Dockerfile
       args:
         EXAMPLE_PATH: 'src/retrievers/structured_data'
-    command: 0.0.0.0 8081 1
+    command: --port 8081 --host 0.0.0.0 --workers 1
     environment:
       EXAMPLE_PATH: 'src/retrievers/structured_data'
       APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"qwen3:4b"}
       APP_LLM_MODELENGINE: ollama-ai-endpoints
-      APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-""}
+      APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-"host.docker.internal:11434"}
       APP_EMBEDDINGS_MODELNAME: ${APP_EMBEDDINGS_MODELNAME:-sentence-transformers/all-mpnet-base-v2}
       APP_EMBEDDINGS_MODELENGINE: ${APP_EMBEDDINGS_MODELENGINE:-huggingface}
       APP_EMBEDDINGS_SERVERURL: ${APP_EMBEDDINGS_SERVERURL:-""}

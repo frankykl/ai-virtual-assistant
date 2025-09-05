@@ -11,13 +11,7 @@ RUN apt update && \
     apt install -y curl software-properties-common && \
     add-apt-repository ppa:deadsnakes/ppa && \
     apt update && apt install -y python3.10 && \
-    apt install -y systemctl && \
     apt-get clean
-
-# Install and run ollama server
-RUN curl -fsSL https://ollama.com/install.sh | sh && \
-    systemctl start ollama && \
-    ollama run qwen3:4b
 
 # Install pip for python3.10
 RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
@@ -51,5 +45,4 @@ COPY src/agent /opt/src/agent
 
 WORKDIR /opt
 
-RUN ["chmod", "+x", "/opt/src/agent/startup_commands.sh"]
-ENTRYPOINT ["/opt/src/agent/startup_commands.sh"]
+ENTRYPOINT ["uvicorn", "src.agent.server:app"]

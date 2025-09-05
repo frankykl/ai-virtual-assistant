@@ -177,11 +177,12 @@ def get_llm(**kwargs) -> LLM | SimpleChatModel:
 
     logger.info(f"Using {settings.llm.model_engine} as model engine for llm. Model name: {settings.llm.model_name}")
     if settings.llm.model_engine == "ollama-ai-endpoints":
-        logger.info(f"Using llm model {settings.llm.model_name} from ollama models")
+        logger.info(f"Using llm model {settings.llm.model_name} hosted at {settings.llm.server_url}")
         return ChatOllama(model=settings.llm.model_name,
-                            temperature = kwargs.get('temperature', None),
-                            top_p = kwargs.get('top_p', None),
-                            max_tokens = kwargs.get('max_tokens', None))
+                          base_url=f"http://{settings.llm.server_url}",
+                          temperature = kwargs.get('temperature', None),
+                          top_p = kwargs.get('top_p', None),
+                          max_tokens = kwargs.get('max_tokens', None))
     elif settings.llm.model_engine == "nvidia-ai-endpoints":
         unused_params = [key for key in kwargs.keys() if key not in ['temperature', 'top_p', 'max_tokens']]
         if unused_params:
