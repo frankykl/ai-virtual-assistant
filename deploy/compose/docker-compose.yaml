@@ -12,7 +12,7 @@ services:
     command: --port 8081 --host 0.0.0.0 --workers 1 --loop asyncio
     environment:
       EXAMPLE_PATH: './src/agent'
-      APP_LLM_MODELNAME: "qwen3:4b"
+      APP_LLM_MODELNAME: "llama3-groq-tool-use"
       APP_LLM_MODELENGINE: ollama-ai-endpoints
       APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-"host.docker.internal:11434"}
       # Cache name to store user conversation
@@ -105,7 +105,7 @@ services:
     command: --port 8081 --host 0.0.0.0 --workers 1
     environment:
       EXAMPLE_PATH: './src/analytics'
-      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"qwen3:4b"}
+      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"llama3-groq-tool-use"}
       APP_LLM_MODELENGINE: ollama-ai-endpoints
       APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-"host.docker.internal:11434"}
       # Database name to store user conversation/summary
@@ -157,7 +157,7 @@ services:
       # Type of vectordb used to store embedding supported type milvus, pgvector
       APP_VECTORSTORE_NAME: "milvus"
       # url on which llm model is hosted. If "", Nvidia hosted API is used
-      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"qwen3:4b"}
+      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"llama3-groq-tool-use"}
       # embedding model engine used for inference, supported type nvidia-ai-endpoints, huggingface
       APP_LLM_MODELENGINE: ollama-ai-endpoints
       # url on which llm model is hosted. If "", Nvidia hosted API is used
@@ -207,7 +207,7 @@ services:
     command: --port 8081 --host 0.0.0.0 --workers 1
     environment:
       EXAMPLE_PATH: 'src/retrievers/structured_data'
-      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"qwen3:4b"}
+      APP_LLM_MODELNAME: ${APP_LLM_MODELNAME:-"llama3-groq-tool-use"}
       APP_LLM_MODELENGINE: ollama-ai-endpoints
       APP_LLM_SERVERURL: ${APP_LLM_SERVERURL:-"host.docker.internal:11434"}
       APP_EMBEDDINGS_MODELNAME: ${APP_EMBEDDINGS_MODELNAME:-sentence-transformers/all-mpnet-base-v2}
